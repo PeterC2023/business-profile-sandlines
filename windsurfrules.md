@@ -675,6 +675,40 @@ export function TaskCard({ taskId, onComplete }: TaskCardProps) {
 | Automated Category Assignment | Classification algorithms for document types and business categories | Medium - Improves organization |
 | Personalization Engine | Rule-based system with ML recommendations for business-specific customizations | High - Delivers value proposition |
 
+## Vercel Deployment & Compatibility Issues
+
+### Package Version Compatibility
+
+**IMPORTANT:** The following package versions must be maintained for Vercel deployment to succeed:
+
+1. **React Compatibility Issues**:
+   - React must use version `^18.2.0` (NOT version 19+)
+   - @tremor/react requires React 18.x and is not compatible with React 19
+   - Always ensure React types match the React version (`@types/react`: `^18`)
+
+2. **NextAuth Compatibility Issues**:
+   - Use NextAuth version `^4.24.11` (NOT version 5+)
+   - Version 5.0.0 is only available as beta releases and will cause deployment failures
+
+3. **Other Potential Issues**:
+   - When adding new packages, always check version compatibility with existing dependencies
+   - Test with local development first, but verify on Vercel as dependency resolution might differ
+   - Consider using `--legacy-peer-deps` in local development to catch dependency conflicts early
+
+### Troubleshooting Deployment Failures
+
+1. **Dependency Conflicts**:
+   - Check error logs for `ERESOLVE` errors which indicate dependency conflicts
+   - Look for messages like `Could not resolve dependency` which point to incompatible package versions
+   - Pay attention to peer dependency requirements for UI component libraries
+
+2. **Resolution Steps**:
+   - Downgrade newer packages to versions compatible with your critical dependencies
+   - Check package documentation for compatibility information
+   - Test changes locally before attempting deployment
+
+Remember: Just because a package works locally doesn't guarantee it will work in Vercel's deployment environment due to different dependency resolution mechanisms.
+
 ## Development Process & Debugging
 
 ### Development Workflow
