@@ -253,11 +253,11 @@ export default function LandingPage() {
   return (
     <div className="overflow-y-auto min-h-screen flex flex-col relative" style={{ height: 'auto', overflowY: 'visible' }}>
       {/* Branded gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#3e5f8a]/20 via-[#e62e4d]/15 to-[#ffd700]/20 z-0 animate-gradient-slow"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#3e5f8a]/20 via-[#e62e4d]/15 to-[#e62e4d]/20 z-0 animate-gradient-slow"></div>
       
       {/* Decorative elements in the background */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-[#3e5f8a]/25 to-[#e62e4d]/25 rounded-bl-full blur-3xl z-0"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#3e5f8a]/25 to-[#ffd700]/20 rounded-tr-full blur-3xl z-0"></div>
+      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#3e5f8a]/25 to-[#e62e4d]/20 rounded-tr-full blur-3xl z-0"></div>
       
 
       
@@ -293,7 +293,7 @@ export default function LandingPage() {
 
         
         <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#333333]">
-          <span className="bg-gradient-to-r from-[#e62e4d] via-[#3e5f8a] to-[#ffd700] text-transparent bg-clip-text animate-gradient-text">
+          <span className="bg-gradient-to-r from-[#e62e4d] to-[#3e5f8a] text-transparent bg-clip-text animate-gradient-text">
             Run Your Business
           </span>
         </h1>
@@ -355,8 +355,8 @@ export default function LandingPage() {
       <div className="container mx-auto px-4 py-16 text-center" id="features">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-[#333333]">
           <span className="relative inline-block">
-            <span className="bg-gradient-to-r from-[#e62e4d] via-[#3e5f8a] to-[#ffd700] text-transparent bg-clip-text animate-gradient-text">Features</span>
-            <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#e62e4d] via-[#3e5f8a] to-[#ffd700] opacity-70"></div>
+            <span className="bg-gradient-to-r from-[#e62e4d] to-[#3e5f8a] text-transparent bg-clip-text animate-gradient-text">Features</span>
+            <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#e62e4d] to-[#3e5f8a] opacity-70"></div>
           </span>
         </h2>
         
@@ -529,7 +529,7 @@ export default function LandingPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-16 bg-gradient-to-r from-[#e62e4d]/15 via-[#3e5f8a]/10 to-[#ffd700]/15 animate-gradient-slow">
+      <div className="py-16 bg-gradient-to-r from-[#e62e4d]/15 via-[#3e5f8a]/10 to-[#3e5f8a]/15 animate-gradient-slow">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6 text-[#333333]">
             <span className="relative">Ready to Transform Your Business?</span>
