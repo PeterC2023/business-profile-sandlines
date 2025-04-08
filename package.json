@@ -13,7 +13,7 @@
     "react-dom": "^18.2.0",
     "next": "15.2.4",
     "next-auth": "^4.24.11",
-    "@auth/core": "^0.28.0",
+    "@auth/core": "0.34.2",
     "@prisma/client": "^5.10.0",
     "@tanstack/react-query": "^5.20.0",
     "@headlessui/react": "^2.0.0",
