@@ -34,8 +34,8 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-in-out backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-fade-in">
+    <div className="fixed inset-0 bg-white/20 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-in-out backdrop-blur-md">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden animate-fade-in">
         <div className="p-4 flex items-center justify-between border-b">
           <h3 className="text-xl font-bold text-[#333333]">{title}</h3>
           <div className="flex space-x-4">
@@ -73,15 +73,12 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
           </div>
         </div>
         
-        <div className="p-6 text-center">
+        <div className="p-6 text-center mb-2">
           <Link 
             href="/signup" 
-            className="px-6 py-3 bg-gradient-to-r from-[#e62e4d] to-[#5e3b94] text-white rounded-lg hover:opacity-90 transition-all shadow-md inline-flex items-center"
+            className="px-8 py-3 bg-gradient-to-r from-[#e62e4d] to-[#5e3b94] text-white rounded-lg hover:opacity-90 transition-all shadow-md inline-block font-medium"
           >
             Try It Now
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-            </svg>
           </Link>
         </div>
       </div>

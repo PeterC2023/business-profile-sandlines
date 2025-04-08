@@ -131,94 +131,135 @@ export default function LandingPage() {
   };
 
   const handleStartNow = () => {
-    // Create and animate particles before redirecting
+    // Create container for animation elements
     const container = document.createElement('div');
-    container.className = 'fixed inset-0 z-50 pointer-events-none';
+    container.className = 'fixed inset-0 z-50 pointer-events-none overflow-hidden';
     document.body.appendChild(container);
     
-    // Create a branded gradient background flash
+    // Create a branded gradient flash background
     const flash = document.createElement('div');
-    flash.className = 'fixed inset-0 bg-gradient-to-r from-[#e62e4d] to-[#5e3b94] z-40 opacity-0';
+    flash.className = 'fixed inset-0 bg-gradient-to-r from-[#e62e4d]/15 via-[#5e3b94]/15 to-[#3e5f8a]/15 z-40 opacity-0';
     document.body.appendChild(flash);
+    
+    // Get button position to start animation from there
+    const buttonRect = document.querySelector('button')?.getBoundingClientRect();
+    if (!buttonRect) {
+      router.push('/home');
+      return;
+    }
     
     // Animate the flash
     setTimeout(() => {
-      flash.style.transition = 'opacity 0.4s ease-in-out';
-      flash.style.opacity = '0.2';
-      
-      setTimeout(() => {
-        flash.style.opacity = '0';
-      }, 600);
+      flash.style.transition = 'opacity 0.7s ease-in-out';
+      flash.style.opacity = '1';
+    }, 50);
+    
+    // Create tornado/vortex element
+    const vortex = document.createElement('div');
+    const startX = buttonRect.left + buttonRect.width / 2;
+    const startY = buttonRect.top + buttonRect.height / 2;
+    
+    // Position the vortex at button location
+    vortex.style.position = 'absolute';
+    vortex.style.left = `${startX}px`;
+    vortex.style.top = `${startY}px`;
+    vortex.style.width = '10px';
+    vortex.style.height = '10px';
+    vortex.style.borderRadius = '50%';
+    vortex.style.background = 'radial-gradient(circle, #e62e4d 10%, #5e3b94 35%, #3e5f8a 70%)';
+    vortex.style.boxShadow = '0 0 30px 10px rgba(94, 59, 148, 0.4)';
+    vortex.style.zIndex = '60';
+    vortex.style.transform = 'translate(-50%, -50%) scale(1)';
+    vortex.style.opacity = '0.9';
+    
+    container.appendChild(vortex);
+    
+    // Create the wave/hurricane effect (no spider-like lines)
+    const waveEffect = document.createElement('div');
+    waveEffect.style.position = 'absolute';
+    waveEffect.style.left = `${startX}px`;
+    waveEffect.style.top = `${startY}px`;
+    waveEffect.style.width = '20px';
+    waveEffect.style.height = '20px';
+    waveEffect.style.borderRadius = '50%';
+    waveEffect.style.background = 'radial-gradient(circle, rgba(230, 46, 77, 0.7) 0%, rgba(94, 59, 148, 0.5) 40%, rgba(62, 95, 138, 0.3) 70%, transparent 100%)';
+    waveEffect.style.zIndex = '55';
+    waveEffect.style.transform = 'translate(-50%, -50%)';
+    waveEffect.style.opacity = '0.9';
+    waveEffect.style.filter = 'blur(2px)';
+    
+    container.appendChild(waveEffect);
+    
+    // Animate the vortex growing
+    setTimeout(() => {
+      vortex.style.transition = 'all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1)';
+      vortex.style.width = '130px';
+      vortex.style.height = '130px';
+      vortex.style.filter = 'blur(8px)';
     }, 100);
     
-    // Create and animate particles
-    const particleCount = 20;
-    const colors = ['#e62e4d', '#5e3b94', '#3e5f8a'];
-    
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      const size = Math.random() * 15 + 5;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      
-      particle.className = 'absolute rounded-full pointer-events-none';
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.backgroundColor = color;
-      particle.style.opacity = '0';
-      
-      // Add blur effect for glow
-      particle.style.filter = 'blur(2px)';
-      
-      // Determine starting position - center it around the button
-      const buttonRect = document.querySelector('button')?.getBoundingClientRect();
-      if (buttonRect) {
-        const startX = buttonRect.left + buttonRect.width / 2;
-        const startY = buttonRect.top + buttonRect.height / 2;
-        
-        particle.style.left = `${startX}px`;
-        particle.style.top = `${startY}px`;
-        
-        // Calculate end position - random direction from center
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 300 + 100;
-        const endX = startX + Math.cos(angle) * distance;
-        const endY = startY + Math.sin(angle) * distance;
-        
-        // Add to container
-        container.appendChild(particle);
-        
-        // Animate
-        setTimeout(() => {
-          particle.style.transition = `all ${Math.random() * 0.5 + 0.8}s ease-out`;
-          particle.style.opacity = `${Math.random() * 0.7 + 0.3}`;
-          particle.style.transform = `translate(${endX - startX}px, ${endY - startY}px) scale(${Math.random() * 0.5 + 0.5})`;
-          
-          // Fade out
-          setTimeout(() => {
-            particle.style.opacity = '0';
-          }, Math.random() * 500 + 300);
-        }, Math.random() * 100);
-      }
-    }
-    
-    // Clean up and redirect
+    // Animate the wave effect
     setTimeout(() => {
-      document.body.removeChild(container);
-      document.body.removeChild(flash);
-      router.push('/home');
-    }, 1200);
+      waveEffect.style.transition = 'all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1)';
+      waveEffect.style.width = '300px';
+      waveEffect.style.height = '300px';
+      waveEffect.style.opacity = '0.1';
+      
+      // Add a second, slower expanding wave
+      const waveEffect2 = document.createElement('div');
+      waveEffect2.style.position = 'absolute';
+      waveEffect2.style.left = `${startX}px`;
+      waveEffect2.style.top = `${startY}px`;
+      waveEffect2.style.width = '30px';
+      waveEffect2.style.height = '30px';
+      waveEffect2.style.borderRadius = '50%';
+      waveEffect2.style.background = 'radial-gradient(circle, rgba(230, 46, 77, 0.6) 0%, rgba(94, 59, 148, 0.4) 30%, rgba(62, 95, 138, 0.2) 60%, transparent 100%)';
+      waveEffect2.style.zIndex = '54';
+      waveEffect2.style.transform = 'translate(-50%, -50%)';
+      waveEffect2.style.opacity = '0.8';
+      waveEffect2.style.filter = 'blur(5px)';
+      
+      container.appendChild(waveEffect2);
+      
+      setTimeout(() => {
+        waveEffect2.style.transition = 'all 1.5s cubic-bezier(0.165, 0.84, 0.44, 1)';
+        waveEffect2.style.width = '500px';
+        waveEffect2.style.height = '500px';
+        waveEffect2.style.opacity = '0';
+      }, 100);
+    }, 150);
+    
+    // Create a final flash before navigating
+    setTimeout(() => {
+      const finalFlash = document.createElement('div');
+      finalFlash.className = 'fixed inset-0 bg-gradient-to-r from-[#e62e4d]/30 via-[#5e3b94]/40 to-[#3e5f8a]/30 z-70 opacity-0';
+      document.body.appendChild(finalFlash);
+      
+      setTimeout(() => {
+        finalFlash.style.transition = 'opacity 0.4s ease-in-out';
+        finalFlash.style.opacity = '1';
+        
+        setTimeout(() => {
+          // Clean up all elements and redirect
+          document.body.removeChild(container);
+          document.body.removeChild(flash);
+          document.body.removeChild(finalFlash);
+          router.push('/home');
+        }, 400);
+      }, 50);
+    }, 1000);
   };
 
   return (
     <div className="overflow-y-auto min-h-screen flex flex-col relative" style={{ height: 'auto', overflowY: 'visible' }}>
-      {/* Beautiful gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#5e3b94]/30 via-white to-[#e62e4d]/30 z-0"></div>
+      {/* Branded gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#3e5f8a]/20 via-[#e62e4d]/15 to-[#ffd700]/20 z-0 animate-gradient-slow"></div>
       
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-[#5e3b94]/50 to-[#e62e4d]/50 rounded-bl-full blur-3xl z-0 animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#3e5f8a]/50 to-[#5e3b94]/50 rounded-tr-full blur-3xl z-0 animate-pulse" style={{animationDelay: '1.5s', animationDuration: '7s'}}></div>
-      <div className="absolute top-1/4 left-1/3 w-24 h-24 bg-gradient-to-r from-[#e62e4d]/40 to-[#5e3b94]/40 rounded-full blur-xl z-0 animate-pulse" style={{animationDuration: '5s'}}></div>
-      <div className="absolute bottom-1/3 right-1/3 w-32 h-32 bg-gradient-to-r from-[#3e5f8a]/40 to-[#e62e4d]/40 rounded-full blur-xl z-0 animate-pulse" style={{animationDelay: '0.8s', animationDuration: '6s'}}></div>
+      {/* Decorative elements in the background */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-[#3e5f8a]/25 to-[#e62e4d]/25 rounded-bl-full blur-3xl z-0"></div>
+      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-[#3e5f8a]/25 to-[#ffd700]/20 rounded-tr-full blur-3xl z-0"></div>
+      
+
       
       {/* Content wrapping relative to place above background */}
       <div className="relative z-10 text-[#333333]">
@@ -249,29 +290,23 @@ export default function LandingPage() {
 
       {/* Hero section with vibrant animated gradients */}
       <div className="container mx-auto px-4 text-center py-16 relative">
-        {/* Small decorative elements */}
-        <div className="absolute top-10 left-1/4 w-12 h-12 bg-[#e62e4d]/30 rounded-full blur-lg animate-pulse"></div>
-        <div className="absolute bottom-10 right-1/4 w-16 h-16 bg-[#5e3b94]/30 rounded-full blur-lg animate-pulse" style={{animationDelay: '1s'}}></div>
+
         
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 relative">
-          <span className="bg-gradient-to-r from-[#e62e4d] via-[#5e3b94] to-[#3e5f8a] text-transparent bg-clip-text bg-size-200 animate-gradient-fast">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#333333]">
+          <span className="bg-gradient-to-r from-[#e62e4d] via-[#3e5f8a] to-[#ffd700] text-transparent bg-clip-text animate-gradient-text">
             Run Your Business
           </span>
-          {/* Sparkle effects */}
-          <span className="absolute -top-5 right-1/4 text-xl animate-bounce">✨</span>
-          <span className="absolute -top-3 left-1/3 text-lg animate-bounce" style={{animationDelay: '0.5s'}}>✨</span>
         </h1>
-        <p className="text-xl text-gray-700 mb-10 relative">
-          <span className="relative z-10">All in one platform for your business.</span>
-          <span className="absolute inset-0 bg-gradient-to-r from-[#e62e4d]/10 via-[#5e3b94]/10 to-[#3e5f8a]/10 rounded-lg blur-sm"></span>
+        <p className="text-xl text-gray-700 mb-10 relative z-10">
+          All in one platform for your business.
         </p>
         <button
           onClick={handleStartNow}
-          className="relative overflow-hidden bg-gradient-to-r from-[#e62e4d] via-[#5e3b94] to-[#3e5f8a] hover:from-[#e62e4d]/90 hover:to-[#5e3b94]/90 text-white px-6 py-3 rounded-lg inline-flex items-center transition-all shadow-md group"
+          className="bg-gradient-to-r from-[#e62e4d] to-[#3e5f8a] hover:opacity-90 text-white px-8 py-4 rounded-lg inline-flex items-center shadow-lg text-lg font-medium transition-all transform hover:-translate-y-1 relative overflow-hidden"
         >
-          <span className="absolute top-0 left-0 w-full h-full bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
-          <span className="relative">Start Now</span>
-          <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <span className="absolute top-0 left-0 w-full h-full bg-white/20 transform -skew-x-12 -translate-x-full hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
+          <span className="relative z-10">Start Now</span>
+          <svg className="w-6 h-6 ml-2 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
           </svg>
         </button>
@@ -281,7 +316,7 @@ export default function LandingPage() {
       <div className="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Step 1 */}
         <div className="bg-white p-8 rounded-xl text-center transition-transform hover:transform hover:scale-105 shadow-md border border-gray-100">
-          <div className="bg-[#e62e4d]/10 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-6">
+          <div className="bg-[#e62e4d]/15 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-6">
             <Upload className="w-8 h-8 text-[#e62e4d]" />
           </div>
           <h2 className="text-xl font-bold mb-3 text-[#333333]">1. Set Up Your Profile</h2>
@@ -293,7 +328,7 @@ export default function LandingPage() {
         
         {/* Step 2 */}
         <div className="bg-white p-8 rounded-xl text-center transition-transform hover:transform hover:scale-105 shadow-md border border-gray-100">
-          <div className="bg-[#3e5f8a]/10 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-6">
+          <div className="bg-[#3e5f8a]/15 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-6">
             <Clock className="w-8 h-8 text-[#3e5f8a]" />
           </div>
           <h2 className="text-xl font-bold mb-3 text-[#333333]">2. Connect Accounts</h2>
@@ -318,9 +353,11 @@ export default function LandingPage() {
 
       {/* Features Section */}
       <div className="container mx-auto px-4 py-16 text-center" id="features">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 relative inline-block">
-          <span className="animate-gradient-x bg-gradient-to-r from-[#e62e4d] via-[#5e3b94] to-[#3e5f8a] text-transparent bg-clip-text bg-size-200">Features</span>
-          <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#e62e4d] via-[#5e3b94] to-[#3e5f8a]"></div>
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-[#333333]">
+          <span className="relative inline-block">
+            <span className="bg-gradient-to-r from-[#e62e4d] via-[#3e5f8a] to-[#ffd700] text-transparent bg-clip-text animate-gradient-text">Features</span>
+            <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#e62e4d] via-[#3e5f8a] to-[#ffd700] opacity-70"></div>
+          </span>
         </h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -331,10 +368,7 @@ export default function LandingPage() {
             role="button"
             aria-label="Watch AI Assistant demo video"
           >
-            {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-1/4 left-1/4" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute top-3/4 right-1/4" style={{background: '#5e3b94'}}></div>
-            <div className="sparkle absolute bottom-1/4 right-1/3" style={{background: '#3e5f8a'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#e62e4d]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#e62e4d]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -344,13 +378,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">AI Assistant</h3>
             <p className="text-gray-600 text-sm">Intelligent support for daily tasks and decisions</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">ChatGPT, Notion AI</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
           
           {/* Feature 2 */}
@@ -360,10 +388,7 @@ export default function LandingPage() {
             role="button"
             aria-label="Watch Financial Management demo video"
           >
-            {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-1/3 right-1/4" style={{background: '#5e3b94'}}></div>
-            <div className="sparkle absolute bottom-1/4 left-1/4" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute top-1/2 right-1/3" style={{background: '#3e5f8a'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#5e3b94]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#5e3b94]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -373,13 +398,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Financial Management</h3>
             <p className="text-gray-600 text-sm">Track, forecast, and optimize your business finances</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">QuickBooks, Wave, Stripe</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
           
           {/* Feature 3 */}
@@ -390,9 +409,7 @@ export default function LandingPage() {
             aria-label="Watch Team Collaboration demo video"
           >
             {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-1/4 right-1/3" style={{background: '#3e5f8a'}}></div>
-            <div className="sparkle absolute bottom-1/3 left-1/5" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute top-2/3 right-1/4" style={{background: '#5e3b94'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#3e5f8a]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#3e5f8a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -402,13 +419,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Team Collaboration</h3>
             <p className="text-gray-600 text-sm">Tools to keep your team connected and productive</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">Slack, Rippling, Gusto</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
           
           {/* Feature 4 */}
@@ -419,9 +430,7 @@ export default function LandingPage() {
             aria-label="Watch Analytics Dashboard demo video"
           >
             {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-1/5 left-1/3" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute bottom-1/4 right-1/5" style={{background: '#5e3b94'}}></div>
-            <div className="sparkle absolute top-3/4 left-1/4" style={{background: '#3e5f8a'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#e62e4d]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#e62e4d]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -432,13 +441,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Analytics Dashboard</h3>
             <p className="text-gray-600 text-sm">Visualize your business data for better decisions</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">Google Analytics, Microsoft Power BI</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
         </div>
 
@@ -450,10 +453,7 @@ export default function LandingPage() {
             role="button"
             aria-label="Watch Smart Scheduling demo video"
           >
-            {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-1/3 left-1/4" style={{background: '#3e5f8a'}}></div>
-            <div className="sparkle absolute bottom-1/3 right-1/3" style={{background: '#5e3b94'}}></div>
-            <div className="sparkle absolute top-1/2 left-1/3" style={{background: '#e62e4d'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#3e5f8a]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#3e5f8a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -463,13 +463,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Smart Scheduling</h3>
             <p className="text-gray-600 text-sm">Automated calendar management and reminders</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">Google Calendar, Calendly</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
           
           {/* Feature 6 */}
@@ -479,10 +473,7 @@ export default function LandingPage() {
             role="button"
             aria-label="Watch Payment Processing demo video"
           >
-            {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-2/5 right-1/4" style={{background: '#5e3b94'}}></div>
-            <div className="sparkle absolute bottom-1/5 left-1/4" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute top-1/3 right-1/3" style={{background: '#3e5f8a'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#5e3b94]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#5e3b94]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -492,13 +483,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Payment Processing</h3>
             <p className="text-gray-600 text-sm">Secure, fast transactions for your business</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">Stripe, PayPal, Square</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
           
           {/* Feature 7 */}
@@ -508,10 +493,7 @@ export default function LandingPage() {
             role="button"
             aria-label="Watch Compliance Tools demo video"
           >
-            {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-1/4 left-1/4" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute bottom-1/3 right-1/4" style={{background: '#5e3b94'}}></div>
-            <div className="sparkle absolute top-3/5 left-1/3" style={{background: '#3e5f8a'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#e62e4d]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#e62e4d]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -521,13 +503,7 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Compliance Tools</h3>
             <p className="text-gray-600 text-sm">Stay updated with regulations for your business</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">LegalZoom, Ironclad, Vanta</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
           
           {/* Feature 8 */}
@@ -537,10 +513,7 @@ export default function LandingPage() {
             role="button"
             aria-label="Watch Customer Support demo video"
           >
-            {/* Sparkle elements for magical effect */}
-            <div className="sparkle absolute top-2/3 left-1/4" style={{background: '#3e5f8a'}}></div>
-            <div className="sparkle absolute bottom-1/4 right-1/3" style={{background: '#e62e4d'}}></div>
-            <div className="sparkle absolute top-1/4 right-1/4" style={{background: '#5e3b94'}}></div>
+
             
             <div className="feature-icon-wrapper bg-[#3e5f8a]/10 rounded-xl p-4 mb-4 h-24 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-[#3e5f8a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -550,25 +523,21 @@ export default function LandingPage() {
             <h3 className="feature-title text-lg font-bold mb-2 text-[#333333]">Customer Support</h3>
             <p className="text-gray-600 text-sm">Integrated tools to manage client relationships</p>
             <div className="mt-3 text-xs text-[#5e3b94] font-medium">Replaces: <span className="text-[#e62e4d]">Intercom, Zendesk, Freshdesk</span></div>
-            <div className="mt-4 text-xs text-[#e62e4d] flex items-center justify-center">
-              <span className="mr-1">Watch Demo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+
           </div>
         </div>
       </div>
 
       {/* CTA Section */}
-      <div className="py-16 bg-gradient-to-r from-[#e62e4d]/10 via-[#5e3b94]/10 to-[#3e5f8a]/10">
+      <div className="py-16 bg-gradient-to-r from-[#e62e4d]/15 via-[#3e5f8a]/10 to-[#ffd700]/15 animate-gradient-slow">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Business?</h2>
+          <h2 className="text-3xl font-bold mb-6 text-[#333333]">
+            <span className="relative">Ready to Transform Your Business?</span>
+          </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Join thousands of businesses using Sandlines to optimize their operations and drive growth.</p>
           <button
             onClick={handleStartNow}
-            className="bg-gradient-to-r from-[#e62e4d] to-[#5e3b94] hover:from-[#e62e4d]/90 hover:to-[#5e3b94]/90 text-white px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            className="bg-gradient-to-r from-[#e62e4d] to-[#5e3b94] hover:opacity-90 text-white px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center shadow-md transition-all"
           >
             Get Started for Free
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -592,6 +561,24 @@ export default function LandingPage() {
         title={videoPopup.title}
         description={videoPopup.description}
       />
+
+      <style jsx global>{`
+        @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animate-gradient-text {
+          background-size: 200% 200%;
+          animation: gradient-shift 300s ease-in-out infinite;
+        }
+
+        .animate-gradient-slow {
+          background-size: 300% 300%;
+          animation: gradient-shift 1200s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
